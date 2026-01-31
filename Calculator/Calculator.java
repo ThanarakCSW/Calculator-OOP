@@ -1,6 +1,5 @@
 import java.util.Scanner;
 
-// Class Calculator XD
 public class Calculator {
     private double num1;
     private double num2;
@@ -21,13 +20,53 @@ public class Calculator {
             case '*':
                 return num1 * num2;
             case '/':
+                // Validation: ตรวจสอบการหารด้วยศูนย์
+                if (num2 == 0)
+                    throw new ArithmeticException("Cannot divide by zero!");
                 return num1 / num2;
             default:
                 throw new IllegalArgumentException("Invalid operator");
         }
     }
-}
 
-public static void main(String[] args) {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
 
+        try {
+            // 1. Validate First Number
+            System.out.print("Enter first number: ");
+            while (!sc.hasNextDouble()) {
+                System.out.println("Error: Please enter a valid number.");
+                sc.next(); // clear buffer
+            }
+            double n1 = sc.nextDouble();
+
+            // 2. Validate Operator
+            System.out.print("Enter operator (+, -, *, /): ");
+            char op = sc.next().charAt(0);
+            while ("+-*/".indexOf(op) == -1) {
+                System.out.print("Error: Invalid operator. Try again (+, -, *, /): ");
+                op = sc.next().charAt(0);
+            }
+
+            // 3. Validate Second Number
+            System.out.print("Enter second number: ");
+            while (!sc.hasNextDouble()) {
+                System.out.println("Error: Please enter a valid number.");
+                sc.next(); // clear buffer
+            }
+            double n2 = sc.nextDouble();
+
+            // ประมวลผล
+            Calculator calc = new Calculator(n1, n2, op);
+            System.out.println("Result: " + calc.calculate());
+
+        } catch (ArithmeticException e) {
+            System.out.println("Math Error: " + e.getMessage());
+        } catch (Exception e) {
+            System.out.println("An unexpected error occurred.");
+        } finally {
+            sc.close();
+        }
+    }
 }
