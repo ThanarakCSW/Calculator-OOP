@@ -26,6 +26,20 @@ public class Calculator {
                 if (num2 == 0)
                     throw new ArithmeticException("Cannot divide by zero!");
                 return num1 / num2;
+            case '^':
+                // Power (ยกกำลัง)
+                return Math.pow(num1, num2);
+            case '%':
+                // Modulo (หารเอาเศษ)
+                if (num2 == 0)
+                    throw new ArithmeticException("Cannot modulo by zero!");
+                return num1 % num2;
+            case 's':
+            case 'S':
+                // Square Root (รากที่สอง) - ใช้ num1 เท่านั้น
+                if (num1 < 0)
+                    throw new ArithmeticException("Cannot calculate square root of negative number!");
+                return Math.sqrt(num1);
             default:
                 throw new IllegalArgumentException("Invalid operator");
         }
@@ -66,20 +80,25 @@ public class Calculator {
                 double n1 = sc.nextDouble();
 
                 // 2. Validate Operator
-                System.out.print("Enter operator (+, -, *, /): ");
+                System.out.print("Enter operator (+, -, *, /, ^, %, s[sqrt]): ");
                 char op = sc.next().charAt(0);
-                while ("+-*/".indexOf(op) == -1) {
-                    System.out.print("Error: Invalid operator. Try again (+, -, *, /): ");
+                while ("+-*/^%sS".indexOf(op) == -1) {
+                    System.out.print("Error: Invalid operator. Try again (+, -, *, /, ^, %, s[sqrt]): ");
                     op = sc.next().charAt(0);
                 }
 
-                // 3. Validate Second Number
-                System.out.print("Enter second number: ");
-                while (!sc.hasNextDouble()) {
-                    System.out.println("Error: Please enter a valid number.");
-                    sc.next(); // clear buffer
+                // 3. Validate Second Number (ไม่ต้องใช้สำหรับ square root)
+                double n2 = 0;
+                if (op != 's' && op != 'S') {
+                    System.out.print("Enter second number: ");
+                    while (!sc.hasNextDouble()) {
+                        System.out.println("Error: Please enter a valid number.");
+                        sc.next(); // clear buffer
+                    }
+                    n2 = sc.nextDouble();
+                } else {
+                    System.out.println("(Square root uses only the first number)");
                 }
-                double n2 = sc.nextDouble();
 
                 // ประมวลผล
                 Calculator calc = new Calculator(n1, n2, op);
