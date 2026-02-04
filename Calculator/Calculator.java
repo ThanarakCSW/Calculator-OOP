@@ -30,63 +30,75 @@ public class Calculator {
                 throw new IllegalArgumentException("Invalid operator");
         }
     }
+
     // ตัด 0 ที่ไม่ใช่เกรด ตัดเศษที่ไม่ใช่ใจ
     public static String autoFormat(double value) {
-    BigDecimal bd = BigDecimal.valueOf(value).stripTrailingZeros();
+        BigDecimal bd = BigDecimal.valueOf(value).stripTrailingZeros();
 
-    // ถ้าเป็นจำนวนเต็ม
-    if (bd.scale() <= 0) {
+        // ถ้าเป็นจำนวนเต็ม
+        if (bd.scale() <= 0) {
+            return bd.toPlainString();
+        }
+
+        // ถ้ามีทศนิยมเกิน 3 ตำแหน่งจะปัด
+        if (bd.scale() > 3) {
+            bd = bd.setScale(3, RoundingMode.HALF_UP)
+                    .stripTrailingZeros();
+        }
+
         return bd.toPlainString();
-    }
-
-    // ถ้ามีทศนิยมเกิน 3 ตำแหน่งจะปัด
-    if (bd.scale() > 3) {
-        bd = bd.setScale(3, RoundingMode.HALF_UP)
-               .stripTrailingZeros();
-    }
-
-    return bd.toPlainString();
     }
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
+        boolean continueCalculation = true;
 
-        try {
-            // 1. Validate First Number
-            System.out.print("Enter first number: ");
-            while (!sc.hasNextDouble()) {
-                System.out.println("Error: Please enter a valid number.");
-                sc.next(); // clear buffer
+        System.out.println("=== Calculator Program ===");
+
+        while (continueCalculation) {
+            try {
+                // 1. Validate First Number
+                System.out.print("\nEnter first number: ");
+                while (!sc.hasNextDouble()) {
+                    System.out.println("Error: Please enter a valid number.");
+                    sc.next(); // clear buffer
+                }
+                double n1 = sc.nextDouble();
+
+                // 2. Validate Operator
+                System.out.print("Enter operator (+, -, *, /): ");
+                char op = sc.next().charAt(0);
+                while ("+-*/".indexOf(op) == -1) {
+                    System.out.print("Error: Invalid operator. Try again (+, -, *, /): ");
+                    op = sc.next().charAt(0);
+                }
+
+                // 3. Validate Second Number
+                System.out.print("Enter second number: ");
+                while (!sc.hasNextDouble()) {
+                    System.out.println("Error: Please enter a valid number.");
+                    sc.next(); // clear buffer
+                }
+                double n2 = sc.nextDouble();
+
+                // ประมวลผล
+                Calculator calc = new Calculator(n1, n2, op);
+                double result = calc.calculate();
+                System.out.println("Result: " + Calculator.autoFormat(result));
+
+            } catch (ArithmeticException e) {
+                System.out.println("Math Error: " + e.getMessage());
+            } catch (Exception e) {
+                System.out.println("An unexpected error occurred.");
             }
-            double n1 = sc.nextDouble();
 
-            // 2. Validate Operator
-            System.out.print("Enter operator (+, -, *, /): ");
-            char op = sc.next().charAt(0);
-            while ("+-*/".indexOf(op) == -1) {
-                System.out.print("Error: Invalid operator. Try again (+, -, *, /): ");
-                op = sc.next().charAt(0);
-            }
-
-            // 3. Validate Second Number
-            System.out.print("Enter second number: ");
-            while (!sc.hasNextDouble()) {
-                System.out.println("Error: Please enter a valid number.");
-                sc.next(); // clear buffer
-            }
-            double n2 = sc.nextDouble();
-
-            // ประมวลผล
-            Calculator calc = new Calculator(n1, n2, op);
-            double result = calc.calculate();
-            System.out.println("Result: " + Calculator.autoFormat(result));
-
-        } catch (ArithmeticException e) {
-            System.out.println("Math Error: " + e.getMessage());
-        } catch (Exception e) {
-            System.out.println("An unexpected error occurred.");
-        } finally {
-            sc.close();
+            // ถามว่าต้องการคำนวณต่อหรือไม่
+            System.out.print("\nDo you want to calculate again? (y/n): ");
+            String response = sc.next().toLowerCase();
+            continueCalculation = response.equals("y") || response.equals("yes");
         }
+
+        System.out.println("\nThank you for using Calculator!");
+        sc.close();
     }
 }
