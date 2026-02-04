@@ -1,5 +1,7 @@
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.ArrayList; // [NEW] เพิ่ม Import ArrayList
+import java.util.List; // [NEW] เพิ่ม Import List
 import java.util.Scanner;
 
 public class Calculator {
@@ -22,21 +24,17 @@ public class Calculator {
             case '*':
                 return num1 * num2;
             case '/':
-                // Validation: ตรวจสอบการหารด้วยศูนย์
                 if (num2 == 0)
                     throw new ArithmeticException("Cannot divide by zero!");
                 return num1 / num2;
             case '^':
-                // Power (ยกกำลัง)
                 return Math.pow(num1, num2);
             case '%':
-                // Modulo (หารเอาเศษ)
                 if (num2 == 0)
                     throw new ArithmeticException("Cannot modulo by zero!");
                 return num1 % num2;
             case 's':
             case 'S':
-                // Square Root (รากที่สอง) - ใช้ num1 เท่านั้น
                 if (num1 < 0)
                     throw new ArithmeticException("Cannot calculate square root of negative number!");
                 return Math.sqrt(num1);
@@ -45,26 +43,19 @@ public class Calculator {
         }
     }
 
-    // ตัด 0 ที่ไม่ใช่เกรด ตัดเศษที่ไม่ใช่ใจ
     public static String autoFormat(double value) {
         BigDecimal bd = BigDecimal.valueOf(value).stripTrailingZeros();
-
-        // ถ้าเป็นจำนวนเต็ม
-        if (bd.scale() <= 0) {
+        if (bd.scale() <= 0)
             return bd.toPlainString();
-        }
-
-        // ถ้ามีทศนิยมเกิน 3 ตำแหน่งจะปัด
-        if (bd.scale() > 3) {
-            bd = bd.setScale(3, RoundingMode.HALF_UP)
-                    .stripTrailingZeros();
-        }
-
+        if (bd.scale() > 3)
+            bd = bd.setScale(3, RoundingMode.HALF_UP).stripTrailingZeros();
         return bd.toPlainString();
     }
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
+        // [NEW] สร้าง List เก็บประวัติ
+        List<String> historyLog = new ArrayList<>();
         boolean continueCalculation = true;
 
         System.out.println("=== Calculator Program ===");
@@ -83,11 +74,11 @@ public class Calculator {
                 System.out.print("Enter operator (+, -, *, /, ^, %, s[sqrt]): ");
                 char op = sc.next().charAt(0);
                 while ("+-*/^%sS".indexOf(op) == -1) {
-                    System.out.print("Error: Invalid operator. Try again (+, -, *, /, ^, %, s[sqrt]): ");
+                    System.out.print("Error: Invalid operator. Try again: ");
                     op = sc.next().charAt(0);
                 }
 
-                // 3. Validate Second Number (ไม่ต้องใช้สำหรับ square root)
+                // 3. Validate Second Number
                 double n2 = 0;
                 if (op != 's' && op != 'S') {
                     System.out.print("Enter second number: ");
@@ -96,14 +87,24 @@ public class Calculator {
                         sc.nextLine();
                     }
                     n2 = sc.nextDouble();
-                } else {
-                    System.out.println("(Square root uses only the first number)");
                 }
 
                 // ประมวลผล
                 Calculator calc = new Calculator(n1, n2, op);
                 double result = calc.calculate();
-                System.out.println("Result: " + Calculator.autoFormat(result));
+                String formattedResult = Calculator.autoFormat(result);
+
+                System.out.println("Result: " + formattedResult);
+
+                // [NEW] บันทึกประวัติลง List
+                String equation;
+                if (op == 's' || op == 'S') {
+                    equation = "sqrt(" + Calculator.autoFormat(n1) + ") = " + formattedResult;
+                } else {
+                    equation = Calculator.autoFormat(n1) + " " + op + " " + Calculator.autoFormat(n2) + " = "
+                            + formattedResult;
+                }
+                historyLog.add(equation);
 
             } catch (ArithmeticException e) {
                 System.out.println("Math Error: " + e.getMessage());
@@ -111,12 +112,33 @@ public class Calculator {
                 System.out.println("An unexpected error occurred.");
             }
 
-            // ถามว่าต้องการคำนวณต่อหรือไม่
-            System.out.print("\nDo you want to calculate again? (y/n): ");
-            String response = sc.next().toLowerCase();
-            continueCalculation = response.equals("y") || response.equals("yes");
-        }
+            // [NEW] ปรับปรุงลูปถามว่าจะไปต่อไหม ให้รองรับตัวเลือก 'h' (History)
+            while (true) {
+                System.out.print("\nDo you want to calculate again? (y/n) or view history (h): ");
+                String response = sc.next().toLowerCase();
 
+                if (response.equals("h")) {
+                    // แสดงประวัติ
+                    System.out.println("\n--- Calculation History ---");
+                    if (historyLog.isEmpty()) {
+                        System.out.println("No history yet.");
+                    } else {
+                        for (int i = 0; i < historyLog.size(); i++) {
+                            System.out.println((i + 1) + ". " + historyLog.get(i));
+                        }
+                    }
+                    // วนลูปถามใหม่ ไม่ break
+                } else if (response.equals("y") || response.equals("yes")) {
+                    continueCalculation = true;
+                    break; // ออกจากลูปถาม ไปเริ่มคำนวณใหม่
+                } else if (response.equals("n") || response.equals("no")) {
+                    continueCalculation = false;
+                    break; // ออกจากลูปถาม และจบโปรแกรม
+                } else {
+                    System.out.println("Invalid input. Please type 'y', 'n', or 'h'.");
+                }
+            }
+        }
         System.out.println("\nThank you for using Calculator!");
         sc.close();
     }
