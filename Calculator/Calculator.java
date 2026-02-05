@@ -15,7 +15,7 @@ public class Calculator {
         this.operator = operator;
     }
     
-// Method to perform calculation based on the operator
+// Method to perform calculation based on the operator | เมทอดการคำนวณของเครื่องคิดเลข
     public double calculate() {
         switch (operator) {
             case '+':
