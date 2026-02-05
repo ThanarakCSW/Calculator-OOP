@@ -58,9 +58,9 @@
 
 | ชื่อ (Github) | บทบาท (Role) | งานที่รับผิดชอบ |
 | :--- | :--- | :--- |
-| **CThanarak** | ⭐ Project Lead | Input Validation, Hotfix Management |
+| **ThanarakCSW** | ⭐ Project Lead | Input Validation, Hotfix Management |
 | **NekoAida** | 🛠️ Developer | Advanced Math Features (Power, Sqrt) |
-| **Narabodee** | 🎨 Developer | Number Formatting System |
+| **Narabodee** | 🎨 Developer | Number Formatting System | 
 
 ---
 *Developed as part of Software Engineering Program, Rajamangala University of Technology Lanna, Chiang Mai (RMUTL).*
