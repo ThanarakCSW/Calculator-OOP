@@ -10,7 +10,7 @@ public class Calculator {
     public Calculator(double num1, double num2, char operator) {
         this.num1 = num1;
         this.num2 = num2;
-        this.operator = operator;
+        this.operator = operator; 
     }
 
     public double calculate() {
@@ -22,7 +22,7 @@ public class Calculator {
             case '*':
                 return num1 * num2;
             case '/':
-                // Validation: ตรวจสอบการหารด้วยศูนย์
+                // Validation: ตรวจสอบการหารด้วยศูนย์ 
                 if (num2 == 0)
                     throw new ArithmeticException("Cannot divide by zero!");
                 return num1 / num2;
@@ -30,8 +30,9 @@ public class Calculator {
                 throw new IllegalArgumentException("Invalid operator");
         }
     }
-    // ตัด 0 ที่ไม่ใช่เกรด ตัดเศษที่ไม่ใช่ใจ
-    public static String autoFormat(double value) {
+
+    // ตัด 0 ที่ไม่ใช่เกรด-ตัดเศษที่ไม่ใช่ใจ
+    public static String Format(double value) {
     BigDecimal bd = BigDecimal.valueOf(value).stripTrailingZeros();
 
     // ถ้าเป็นจำนวนเต็ม
@@ -79,7 +80,7 @@ public class Calculator {
             // ประมวลผล
             Calculator calc = new Calculator(n1, n2, op);
             double result = calc.calculate();
-            System.out.println("Result: " + Calculator.autoFormat(result));
+            System.out.println("Result: " + Calculator.Format(result));
 
         } catch (ArithmeticException e) {
             System.out.println("Math Error: " + e.getMessage());
