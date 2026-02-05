@@ -9,7 +9,7 @@
 
 ทีมของเราใช้ **Gitflow Workflow** ในการพัฒนา เพื่อแยกส่วนการทำงานระหว่างฟีเจอร์ใหม่, การแก้ไขบั๊ก และเวอร์ชันพร้อมใช้งานอย่างชัดเจน:
 
-![Git Workflow Diagram](./images/git-workflow.png)
+![Git Workflow Diagram](./image/workFlow.png)
 *(แผนผังแสดง Workflow การทำงานของทีม)*
 
 ### โครงสร้าง Branch
@@ -58,9 +58,9 @@
 
 | ชื่อ (Github) | บทบาท (Role) | งานที่รับผิดชอบ |
 | :--- | :--- | :--- |
-| **CThanarak** | ⭐ Project Lead | Input Validation, Hotfix Management |
+| **ThanarakCSW** | ⭐ Project Lead | Input Validation, Hotfix Management |
 | **NekoAida** | 🛠️ Developer | Advanced Math Features (Power, Sqrt) |
-| **Narabodee** | 🎨 Developer | Number Formatting System |
+| **Narabodee** | 🎨 Developer | Number Formatting System | 
 
 ---
 *Developed as part of Software Engineering Program, Rajamangala University of Technology Lanna, Chiang Mai (RMUTL).*
