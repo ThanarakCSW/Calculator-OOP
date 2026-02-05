@@ -15,6 +15,7 @@ public class Calculator {
         this.operator = operator;
     }
 
+    // เมทอดการคำนวณ
     public double calculate() {
         switch (operator) {
             case '+':
