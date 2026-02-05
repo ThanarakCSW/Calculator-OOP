@@ -14,8 +14,9 @@ public class Calculator {
         this.num2 = num2;
         this.operator = operator;
     }
-    
-// Method to perform calculation based on the operator | เมทอดการคำนวณของเครื่องคิดเลข
+
+    // Method to perform calculation based on the operator |
+    // เมทอดการคำนวณของเครื่องคิดเลข
     public double calculate() {
         switch (operator) {
             case '+':
@@ -39,9 +40,39 @@ public class Calculator {
                 if (num1 < 0)
                     throw new ArithmeticException("Cannot calculate square root of negative number!");
                 return Math.sqrt(num1);
+            case '!':
+                return factorial(num1);
             default:
                 throw new IllegalArgumentException("Invalid operator");
         }
+    }
+
+    // [NEW] Factorial Helper Method
+    private static double factorial(double num) {
+        // ตรวจสอบว่าเป็นจำนวนเต็มหรือไม่
+        if (num != Math.floor(num)) {
+            throw new ArithmeticException("Factorial requires a whole number!");
+        }
+
+        int n = (int) num;
+
+        // ตรวจสอบว่าเป็นค่าบวกหรือศูนย์
+        if (n < 0) {
+            throw new ArithmeticException("Factorial requires a non-negative number!");
+        }
+
+        // จำกัดค่าสูงสุดเพื่อป้องกันค่าล้น
+        if (n > 20) {
+            throw new ArithmeticException("Factorial input too large (max 20)!");
+        }
+
+        // คำนวณ factorial
+        long result = 1;
+        for (int i = 2; i <= n; i++) {
+            result *= i;
+        }
+
+        return (double) result;
     }
 
     public static String autoFormat(double value) {
