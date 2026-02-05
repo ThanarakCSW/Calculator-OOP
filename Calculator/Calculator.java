@@ -92,6 +92,7 @@ public class Calculator {
 
         System.out.println("================================");
         System.out.println("    Hello Welcome To Calculator Program");
+        System.out.println("    สวัสดี! ยินดีต้อนรับสู่เครื่องคิดเลข");
         System.out.println("================================");
 
         while (continueCalculation) {
