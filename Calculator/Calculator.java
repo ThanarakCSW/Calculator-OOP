@@ -14,7 +14,8 @@ public class Calculator {
         this.num2 = num2;
         this.operator = operator;
     }
-
+    
+// Method to perform calculation based on the operator
     public double calculate() {
         switch (operator) {
             case '+':
