@@ -58,7 +58,9 @@ public class Calculator {
         List<String> historyLog = new ArrayList<>();
         boolean continueCalculation = true;
 
-        System.out.println("=== Calculator Program ===");
+        System.out.println("================================");
+        System.out.println("    Welcome To Calculator Program");
+        System.out.println("================================");
 
         while (continueCalculation) {
             try {
